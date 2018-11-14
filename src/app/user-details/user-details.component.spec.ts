@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { AppModule } from '../app.module';
+import { User } from '../user';
 import { UserDetailsComponent } from './user-details.component';
 
 describe('UserDetailsComponent', () => {
@@ -8,14 +9,15 @@ describe('UserDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserDetailsComponent ]
-    })
-    .compileComponents();
+      declarations: [],
+      imports: [AppModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserDetailsComponent);
     component = fixture.componentInstance;
+    component.selectedUser = new User();
     fixture.detectChanges();
   });
 

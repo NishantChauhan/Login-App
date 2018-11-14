@@ -20,7 +20,6 @@ export class RegexValidatorDirective implements Validator {
     if (this.regexValidation) {
       const regularExpression = new RegExp(this.regexValidation, 'i');
       validationOutput = regexValidator(regularExpression)(control);
-      console.log(validationOutput);
     }
     return validationOutput;
   }

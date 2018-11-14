@@ -1,25 +1,27 @@
-<div class="jumbotron">
-  <h1 class="display-3">User Enrollment Form</h1>
-  <p class="lead">Welcome to Angular and Bootstrap Test</p>
-  <hr class="my-2" />
-  <button
-    class="btn btn-primary"
-    value="ReactiveBtn"
-    #ReactiveBtn
-    (click)="onClick(ReactiveBtn.value)"
-  >
-    Reactive Form
-  </button>
-  <button
-    class="btn btn-warning"
-    value="TemplateBtn"
-    #TemplateBtn
-    (click)="onClick(TemplateBtn.value)"
-  >
-    Template Driven Form
-  </button>
-</div>
-<div *ngIf="form === 'TemplateBtn'"><app-user-form></app-user-form></div>
-<div *ngIf="form === 'ReactiveBtn'">
-  <app-user-reactive-form></app-user-reactive-form>
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-3">User Enrollment Form</h1>
+    <p class="lead">Welcome to Angular and Bootstrap Test</p>
+    <hr class="my-2" />
+    <button
+      class="btn btn-primary"
+      value="ReactiveBtn"
+      #ReactiveBtn
+      (click)="onClick(ReactiveBtn.value)"
+    >
+      Reactive Form
+    </button>
+    <button
+      class="btn btn-warning"
+      value="TemplateBtn"
+      #TemplateBtn
+      (click)="onClick(TemplateBtn.value)"
+    >
+      Template Driven Form
+    </button>
+  </div>
+  <div *ngIf="form === 'TemplateBtn'"><app-user-form></app-user-form></div>
+  <div *ngIf="form === 'ReactiveBtn'">
+    <app-user-reactive-form></app-user-reactive-form>
+  </div>
 </div>

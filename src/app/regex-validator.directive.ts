@@ -1,10 +1,5 @@
 import { Directive, Input } from '@angular/core';
-import {
-  NG_VALIDATORS,
-  Validator,
-  ValidatorFn,
-  AbstractControl
-} from '@angular/forms';
+import { AbstractControl, NG_VALIDATORS, Validator, ValidatorFn } from '@angular/forms';
 
 @Directive({
   selector: '[appRegexValidation]',
@@ -12,19 +7,18 @@ import {
     {
       provide: NG_VALIDATORS,
       useExisting: RegexValidatorDirective,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class RegexValidatorDirective implements Validator {
-  @Input('appRegexValidation')
-  appRegexValidation: string;
+  @Input('appRegexValidation') regexValidation: string;
 
   validate(control: AbstractControl): { [key: string]: any } | null {
     let validationOutput = null;
 
-    if (this.appRegexValidation) {
-      const regularExpression = new RegExp(this.appRegexValidation, 'i');
+    if (this.regexValidation) {
+      const regularExpression = new RegExp(this.regexValidation, 'i');
       validationOutput = regexValidator(regularExpression)(control);
       console.log(validationOutput);
     }
@@ -32,25 +26,22 @@ export class RegexValidatorDirective implements Validator {
   }
 }
 export function regexValidator(nameRe: RegExp): ValidatorFn {
-
   // Validator Funtion
   // Input: Control - Any HTML Text input
   // Output: if regex passed, Object else null
-  const valControl = (
-    control: AbstractControl
-  ): { [key: string]: any } | null => { // Object
+  const valControl = (control: AbstractControl): { [key: string]: any } | null => {
+    // Object
 
     let funcOutput: any;
 
     // Check if control value matches the regular expression
     const regexOutput = nameRe.test(control.value);
 
-
     if (regexOutput) {
       // const val = ['1', '1', '1'];
       const controlValue = control.value; // control Value
-      const val = { 'value': controlValue}; // Object to store control value
-      funcOutput = { 'appRegexValidation': val}; // Object to store control validation
+      const val = { value: controlValue }; // Object to store control value
+      funcOutput = { regexValidation: val }; // Object to store control validation
     }
 
     return funcOutput;

@@ -1,3 +1,165 @@
-<p>
-  user-reactive-form works!
-</p>
+<div class="container">
+  <div *ngIf="!submitted">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2"><label for="user-fullname">User Name</label></div>
+          <div class="col-sm-4">
+            <input
+              formControlName="fullname"
+              type="text"
+              class="form-control"
+              autocomplete="username"
+              id="rt_fullname"
+              aria-describedby="helpId"
+              placeholder="e.g. Jolly Doe"
+              required
+            />
+
+            <div
+              *ngIf="
+                loginForm.get('fullname').invalid &&
+                (loginForm.get('fullname').dirty || loginForm.get('fullname').touched)
+              "
+              class="alert alert-danger"
+            >
+              <div *ngIf="loginForm.get('fullname').errors['required']">
+                Name is mandatory
+              </div>
+              <div *ngIf="loginForm.get('fullname').errors['regexValidation']">
+                Only english alphabets are allowed
+              </div>
+              <div *ngIf="loginForm.get('fullname').errors['minlength']">
+                Name should be atleast 3 characters
+              </div>
+            </div>
+
+            <small id="rt_fullname-helpId" class="form-text text-muted"
+              >Enter User Name</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2"><label for="user-password">Password</label></div>
+          <div class="col-sm-4">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              id="rt_password"
+              autocomplete="new-password"
+              aria-describedby="helpId"
+              placeholder="e.g. password"
+              required
+            />
+            <small id="rt_password-helpId" class="form-text text-muted"
+              >Enter Password</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2"><label for="user-password">Confirm Password</label></div>
+          <div class="col-sm-4">
+            <input
+              type="password"
+              class="form-control"
+              id="rt_confirm_password"
+              aria-describedby="confirm-password-helpId"
+              placeholder="e.g. password"
+              required
+            />
+            <small id="rt_confirm-password-helpId" class="form-text text-muted"
+              >Confirm Password</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2"><label for="user-type">Subscription Type</label></div>
+          <div class="col-sm-4">
+            <select class="form-control" formControlName="type" required>
+              <option *ngFor="let type of userTypes" [value]="type">{{ type }}</option>
+            </select>
+            <small id="rt_type-helpId" class="form-text text-muted"
+              >Select Subscription Type</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2"><label for="user-gender">Gender</label></div>
+          <div class="col-sm-4">
+            <div class="form-check form-check-inline">
+              <div *ngFor="let gender of genders" class="radio">
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  formControlName="gender"
+                  (click)="onGenderClick(gender)"
+                  value="{{gender}}"
+                  required
+                />
+                <label class="form-check-label" for="user-gender"
+                  >{{ gender }}&nbsp;</label
+                >
+              </div>
+            </div>
+            <div *ngIf="enableOtherGender">
+              <small id="rt_type-helpId" class="form-text text-muted"
+                >If Other, Please mention (minimum 3 letters)</small
+              >
+              <input
+                type="text"
+                class="form-control"
+                formControlName="otherGenderText"
+                maxlength="50"
+                placeholder=" e.g. Transgender"
+                required
+              />
+            </div>
+            <small id="rt_type-helpId" class="form-text text-muted"
+              >Please select/mention your gender</small
+            >
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-4">
+            <button
+              type="submit"
+              id="rt_"
+              class="btn btn-danger"
+              [disabled]="loginForm.invalid"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="submitted">
+    <h2>User Information</h2>
+    <div class="row">
+      <div class="col-sm-4">
+        <app-user-details [selectedUser]="loginForm.value"></app-user-details>
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="btn btn-danger" (click)="onReset()">Reset</button>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,7 @@
               minlength="3"
               maxlength="50"
               appRegexValidation="[^A-Z]"
+              appUnavailableValidaton
               [(ngModel)]="user.fullname"
               name="user-fullname"
               #namebox="ngModel"
@@ -27,6 +28,9 @@
               <div *ngIf="namebox.errors['required']">Name is mandatory</div>
               <div *ngIf="namebox.errors['regexValidation']">
                 Only english alphabets are allowed
+              </div>
+              <div *ngIf="namebox.errors['unavailableValidation']">
+                Username is unavailable
               </div>
               <div *ngIf="namebox.errors['minlength']">
                 Name should be atleast 3 characters

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { regexValidator } from '../regex-validator.directive';
+import { UnavailableValidator } from '../unavailable-validator.directive';
 import { Gender, UserType } from '../user';
 
 @Component({
@@ -9,7 +10,10 @@ import { Gender, UserType } from '../user';
   styleUrls: ['./user-reactive-form.component.css'],
 })
 export class UserReactiveFormComponent implements OnInit {
-  constructor(private builder: FormBuilder) {}
+  constructor(
+    private builder: FormBuilder,
+    private unavailableValidator: UnavailableValidator
+  ) {}
   submitted;
   userTypes = Object.values(UserType); // Work Around to user options for dropdown
   genders = Object.values(Gender); // Work Around to user options
@@ -21,29 +25,28 @@ export class UserReactiveFormComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.buildForm();
   }
-  onSubmit() {
-    if (this.loginForm.get('otherGenderText') && this.loginForm.value.otherGenderText) {
-      this.loginForm.patchValue({
-        gender: this.loginForm.value.otherGenderText,
-      });
-      this.removeOtherGenderText();
-    }
-    this.submitted = true;
-  }
   buildForm() {
     return this.builder.group({
       fullname: [
         '',
-        [Validators.required, Validators.minLength(3), regexValidator(/[^A-Z]/i)],
+        {
+          validators: [
+            Validators.required,
+            Validators.minLength(3),
+            regexValidator(/[^A-Z]/i),
+          ],
+          asyncValidators: [
+            this.unavailableValidator.validate.bind(this.unavailableValidator),
+          ],
+          // updateOn: 'blur', // Not Required for now
+        },
       ],
       password: ['', Validators.required],
       type: ['', Validators.required],
-      gender: [
-        '',
-        [Validators.required, Validators.minLength(3), Validators.nullValidator],
-      ],
+      gender: ['', [Validators.required, Validators.minLength(3)]],
     });
   }
+
   onGenderClick(gender) {
     if (gender === this.genderType.OTHER) {
       this.addOtherGenderText();
@@ -53,10 +56,6 @@ export class UserReactiveFormComponent implements OnInit {
       this.enableOtherGender = false;
     }
   }
-  onReset() {
-    this.loginForm = this.buildForm();
-    this.submitted = false;
-  }
   removeOtherGenderText() {
     this.loginForm.removeControl('otherGenderText');
   }
@@ -65,5 +64,22 @@ export class UserReactiveFormComponent implements OnInit {
       'otherGenderText',
       new FormControl('', Validators.required)
     );
+  }
+  onReset() {
+    this.loginForm = this.buildForm();
+    this.submitted = false;
+  }
+  onSubmit() {
+    this.patchGender();
+    this.submitted = true;
+  }
+
+  private patchGender() {
+    if (this.loginForm.get('otherGenderText') && this.loginForm.value.otherGenderText) {
+      this.loginForm.patchValue({
+        gender: this.loginForm.value.otherGenderText,
+      });
+      this.removeOtherGenderText();
+    }
   }
 }

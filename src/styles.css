@@ -4,7 +4,11 @@
 .ng-valid.required {
   border-left: 5px solid #42a948; /* green */
 }
+.ng-invalid[required],
+.ng-invalid.required {
+  outline: 1px solid #a94442;
+}
+
 .ng-invalid:not(form) {
   border-left: 5px solid #a94442; /* red */
-  outline: 1px solid #a94442;
 }

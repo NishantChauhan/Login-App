@@ -16,7 +16,9 @@
               autocomplete="username"
               required
             />
-
+            <div class="alert alert-warning" *ngIf="loginForm.get('fullname').pending">
+              Validating...
+            </div>
             <div
               *ngIf="
                 loginForm.get('fullname').invalid &&
@@ -29,6 +31,9 @@
               </div>
               <div *ngIf="loginForm.get('fullname').errors['regexValidation']">
                 Only english alphabets are allowed
+              </div>
+              <div *ngIf="loginForm.get('fullname').errors['unavailableValidation']">
+                Username is unavailable
               </div>
               <div *ngIf="loginForm.get('fullname').errors['minlength']">
                 Name should be atleast 3 characters

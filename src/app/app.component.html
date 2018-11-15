@@ -20,8 +20,12 @@
       Template Driven Form
     </button>
   </div>
-  <div *ngIf="form === 'TemplateBtn'"><app-user-form></app-user-form></div>
+  <div *ngIf="form === 'TemplateBtn'">
+    <div class="alert alert-warning">Template Driven Form</div>
+    <app-user-form></app-user-form>
+  </div>
   <div *ngIf="form === 'ReactiveBtn'">
+    <div class="alert alert-primary">Reactive Form</div>
     <app-user-reactive-form></app-user-reactive-form>
   </div>
 </div>

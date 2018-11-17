@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, Observer, of, TeardownLogic } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +7,20 @@ import { Observable, of } from 'rxjs';
 export class UserService {
   constructor() {}
   isNameAvailable(name: string): Observable<boolean> {
-    const unavailableNames = ['tom', 'tommy', 'dick', 'harry'];
-    return of(unavailableNames.includes(name.toLowerCase()));
+    return of(getUnavailableNamesList().includes(name.toLowerCase()));
   }
+  getUnAvailableNames(): Observable<string> {
+    return new Observable<string>(getUnavailableNamesLogic);
+  }
+}
+function getUnavailableNamesLogic(observer: Observer<string>): TeardownLogic {
+  const unavailableNames = getUnavailableNamesList();
+  unavailableNames.forEach(name => {
+    observer.next(name);
+  });
+  observer.complete();
+  return { unsubscribe() {} };
+}
+function getUnavailableNamesList() {
+  return ['tom', 'tommy', 'dick', 'harry'];
 }

@@ -1,24 +1,15 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RegexValidatorDirective } from './regex-validator.directive';
-import { UnavailableValidatorDirective } from './unavailable-validator.directive';
-import { UserDetailsComponent } from './user-details/user-details.component';
-import { UserFormComponent } from './user-form/user-form.component';
-import { UserReactiveFormComponent } from './user-reactive-form/user-reactive-form.component';
+import { HomeComponent } from './home/home.component';
+import { UnavailableValidatorDirective } from './shared/unavailable-validator.directive';
+import { UserService } from './user/user.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    UserDetailsComponent,
-    UserFormComponent,
-    RegexValidatorDirective,
-    UserReactiveFormComponent,
-    UnavailableValidatorDirective,
-  ],
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule],
-  providers: [],
+  declarations: [AppComponent, HomeComponent, UnavailableValidatorDirective],
+  imports: [BrowserModule, AppRoutingModule],
+  providers: [UserService, UnavailableValidatorDirective],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

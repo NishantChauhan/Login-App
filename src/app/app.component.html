@@ -3,29 +3,6 @@
     <h1 class="display-7">User Enrollment Form</h1>
     <p class="lead">Welcome to Angular and Bootstrap Test</p>
     <hr class="my-2" />
-    <button
-      class="btn btn-primary"
-      value="ReactiveBtn"
-      #ReactiveBtn
-      (click)="onClick(ReactiveBtn.value)"
-    >
-      Reactive Form
-    </button>
-    <button
-      class="btn btn-warning"
-      value="TemplateBtn"
-      #TemplateBtn
-      (click)="onClick(TemplateBtn.value)"
-    >
-      Template Driven Form
-    </button>
   </div>
-  <div *ngIf="form === 'TemplateBtn'">
-    <div class="alert alert-warning">Template Driven Form</div>
-    <app-user-form></app-user-form>
-  </div>
-  <div *ngIf="form === 'ReactiveBtn'">
-    <div class="alert alert-primary">Reactive Form</div>
-    <app-user-reactive-form></app-user-reactive-form>
-  </div>
+  <router-outlet></router-outlet>
 </div>

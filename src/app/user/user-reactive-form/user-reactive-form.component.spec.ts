@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { AppModule } from '../app.module';
+import { commonTestingModules } from 'src/app/shared/common-testing';
+import { UserDetailsComponent } from '../user-details/user-details.component';
 import { UserReactiveFormComponent } from './user-reactive-form.component';
 
 describe('UserReactiveFormComponent', () => {
@@ -9,8 +9,8 @@ describe('UserReactiveFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
-      imports: [AppModule, ReactiveFormsModule],
+      declarations: [UserReactiveFormComponent, UserDetailsComponent],
+      imports: commonTestingModules,
     }).compileComponents();
   }));
 

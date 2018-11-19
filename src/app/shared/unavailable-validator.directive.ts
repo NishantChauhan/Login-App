@@ -6,8 +6,14 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { UserService } from './user.service';
+import {
+  catchError,
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  map,
+} from 'rxjs/operators';
+import { UserService } from '../user/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class UnavailableValidator implements AsyncValidator {
@@ -15,6 +21,10 @@ export class UnavailableValidator implements AsyncValidator {
     control: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     return this.userService.isNameAvailable(control.value).pipe(
+      delay(300),
+      debounceTime(1000),
+      distinctUntilChanged(),
+
       map(isAvailable => (isAvailable ? { unavailableValidation: true } : null)),
       catchError(() => null)
     );

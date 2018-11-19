@@ -1,46 +1,43 @@
 <div class="container">
+  <div class="alert alert-warning">Template Driven Form</div>
   <div *ngIf="!submitted">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form #userForm="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <div class="row">
           <div class="col-sm-2"><label for="user-fullname">User Name</label></div>
           <div class="col-sm-4">
             <input
-              formControlName="fullname"
               type="text"
               class="form-control"
               autocomplete="username"
-              id="rt_fullname"
+              id="fullname"
               aria-describedby="helpId"
               placeholder="e.g. Jolly Doe"
-              autocomplete="username"
               required
+              minlength="3"
+              maxlength="50"
+              appRegexValidation="[^A-Z]"
+              appUnavailableValidaton
+              [(ngModel)]="user.fullname"
+              name="user-fullname"
+              #namebox="ngModel"
             />
-            <div class="alert alert-warning" *ngIf="loginForm.get('fullname').pending">
-              Validating...
-            </div>
             <div
-              *ngIf="
-                loginForm.get('fullname').invalid &&
-                (loginForm.get('fullname').dirty || loginForm.get('fullname').touched)
-              "
+              *ngIf="namebox.invalid && (namebox.dirty || namebox.touched)"
               class="alert alert-danger"
             >
-              <div *ngIf="loginForm.get('fullname').errors['required']">
-                Name is mandatory
-              </div>
-              <div *ngIf="loginForm.get('fullname').errors['regexValidation']">
+              <div *ngIf="namebox.errors['required']">Name is mandatory</div>
+              <div *ngIf="namebox.errors['regexValidation']">
                 Only english alphabets are allowed
               </div>
-              <div *ngIf="loginForm.get('fullname').errors['unavailableValidation']">
+              <div *ngIf="namebox.errors['unavailableValidation']">
                 Username is unavailable
               </div>
-              <div *ngIf="loginForm.get('fullname').errors['minlength']">
+              <div *ngIf="namebox.errors['minlength']">
                 Name should be atleast 3 characters
               </div>
             </div>
-
-            <small id="rt_fullname-helpId" class="form-text text-muted"
+            <small id="fullname-helpId" class="form-text text-muted"
               >Enter User Name</small
             >
           </div>
@@ -54,15 +51,15 @@
             <input
               type="password"
               class="form-control"
-              formControlName="password"
-              id="rt_password"
+              name="user-password"
+              [(ngModel)]="user.password"
+              id="password"
               autocomplete="new-password"
               aria-describedby="helpId"
               placeholder="e.g. password"
-              autocomplete="new-password"
               required
             />
-            <small id="rt_password-helpId" class="form-text text-muted"
+            <small id="password-helpId" class="form-text text-muted"
               >Enter Password</small
             >
           </div>
@@ -76,13 +73,13 @@
             <input
               type="password"
               class="form-control"
-              id="rt_confirm_password"
+              id="confirm-password"
               aria-describedby="confirm-password-helpId"
-              placeholder="e.g. password"
               autocomplete="new-password"
+              placeholder="e.g. password"
               required
             />
-            <small id="rt_confirm-password-helpId" class="form-text text-muted"
+            <small id="confirm-password-helpId" class="form-text text-muted"
               >Confirm Password</small
             >
           </div>
@@ -93,10 +90,15 @@
         <div class="row">
           <div class="col-sm-2"><label for="user-type">Subscription Type</label></div>
           <div class="col-sm-4">
-            <select class="form-control" formControlName="type" required>
+            <select
+              class="form-control"
+              name="user-type"
+              [(ngModel)]="user.type"
+              required
+            >
               <option *ngFor="let type of userTypes" [value]="type">{{ type }}</option>
             </select>
-            <small id="rt_type-helpId" class="form-text text-muted"
+            <small id="type-helpId" class="form-text text-muted"
               >Select Subscription Type</small
             >
           </div>
@@ -111,10 +113,10 @@
               <div *ngFor="let gender of genders" class="radio">
                 <input
                   type="radio"
+                  name="user-gender"
                   class="form-check-input"
-                  formControlName="gender"
-                  (click)="onGenderClick(gender)"
                   value="{{gender}}"
+                  [(ngModel)]="user.gender"
                   required
                 />
                 <label class="form-check-label" for="user-gender"
@@ -122,20 +124,23 @@
                 >
               </div>
             </div>
-            <div *ngIf="enableOtherGender">
-              <small id="rt_type-helpId" class="form-text text-muted"
+            <div *ngIf="user.gender && user.gender == genderType.OTHER">
+              <small id="type-helpId" class="form-text text-muted"
                 >If Other, Please mention (minimum 3 letters)</small
               >
               <input
                 type="text"
                 class="form-control"
-                formControlName="otherGenderText"
+                name="user-gender-other"
+                [(ngModel)]="otherGenderText"
+                minlength="3"
                 maxlength="50"
                 placeholder=" e.g. Transgender"
                 required
               />
             </div>
-            <small id="rt_type-helpId" class="form-text text-muted"
+
+            <small id="type-helpId" class="form-text text-muted"
               >Please select/mention your gender</small
             >
           </div>
@@ -147,9 +152,10 @@
           <div class="col-sm-4">
             <button
               type="submit"
-              id="rt_"
+              name="user-submit"
+              id=""
               class="btn btn-danger"
-              [disabled]="loginForm.invalid"
+              [disabled]="userForm.form.invalid"
             >
               Submit
             </button>
@@ -163,7 +169,7 @@
     <h2>User Information</h2>
     <div class="row">
       <div class="col-sm-4">
-        <app-user-details [selectedUser]="loginForm.value"></app-user-details>
+        <app-user-details [selectedUser]="user"></app-user-details>
       </div>
     </div>
     <div class="form-group">
